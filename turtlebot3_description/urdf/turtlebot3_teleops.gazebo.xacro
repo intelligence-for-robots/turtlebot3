@@ -64,10 +64,13 @@
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
-      <publishOdomTF>true</publishOdomTF>
-      <robotBaseFrame>base_footprint</robotBaseFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <!--robotBaseFrame>base_footprint</robotBaseFrame-->
+
+      <publishOdomTF>false</publishOdomTF>
       <publishWheelTF>false</publishWheelTF>
       <publishTf>true</publishTf>
+
       <publishWheelJointState>true</publishWheelJointState>
       <legacyMode>false</legacyMode>
       <updateRate>30</updateRate>
@@ -86,7 +89,7 @@
       <alwaysOn>true</alwaysOn>
       <bodyName>imu_link</bodyName>
       <frameName>imu_link</frameName>
-      <topicName>imu</topicName>
+      <topicName>imu/data</topicName>
       <serviceName>imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
       <updateRate>200</updateRate>
@@ -151,17 +154,34 @@
   </xacro:kinect_v2-->
 
   <!-- Adding the GPS sensor -->
-  <gazebo>
+  <!--gazebo reference="gps_link">
     <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
       <alwayson>true</alwayson>
       <updaterate>1.0</updaterate>
       <bodyname>base_link</bodyname>
+      <framename>gps_link</framename>
       <topicname>/fix</topicname>
       <velocitytopicname>/fix_velocity</velocitytopicname>
       <drift>5.0 5.0 5.0</drift>
       <gaussiannoise>0.1 0.1 0.1</gaussiannoise>
       <velocitydrift>0 0 0</velocitydrift>
       <velocitygaussiannoise>0.1 0.1 0.1</velocitygaussiannoise>
+    </plugin>
+  </gazebo-->
+
+  <gazebo>
+    <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+      <!--robotNamespace>$(arg robot_namespace)</robotNamespace-->
+      <updateRate>40</updateRate>
+      <bodyName>base_link</bodyName>
+      <frameId>base_link</frameId>
+      <topicName>navsat/fix</topicName>
+      <velocityTopicName>navsat/vel</velocityTopicName>
+      <referenceLatitude>49.9</referenceLatitude>
+      <referenceLongitude>8.9</referenceLongitude>
+      <referenceHeading>0</referenceHeading>
+      <referenceAltitude>0</referenceAltitude>
+      <drift>0.0001 0.0001 0.0001</drift>
     </plugin>
   </gazebo>
 
